@@ -1,0 +1,41 @@
+version: '3.3'
+services:
+    pritunl:
+        container_name: pritunl
+        image: jippi/pritunl:latest-jammy
+        hostname: "vpn.prod.local"
+        restart: unless-stopped 
+        privileged: true
+        ports:
+            - '80:80'
+            - '443:443'
+            - '1194:1194/udp'
+            - '1194:1194/tcp'
+            - '1197:1197/tcp'
+        environment:
+            - PRITUNL_MONGODB_URI=mongodb://admin:admin2025@mongodb001.local:27017/pritunl?authSource=admin
+        volumes:
+            - './data/pritunl.conf:/etc/pritunl.conf'
+            - './data/pritunl:/var/lib/pritunl'
+         #   - './data/mongodb:/var/lib/mongodb'
+        networks:
+            - net
+    mongodb:
+        image: mongodb/mongodb-community-server:6.0-ubi8
+        container_name: mongodb001
+        hostname: "mongodb001.local"
+        restart: unless-stopped
+        user: '0'  # Replace '1000' with your actual UID
+        environment:
+        - MONGODB_INITDB_ROOT_USERNAME=admin
+        - MONGODB_INITDB_ROOT_PASSWORD=admin2025
+        ports:
+        - '27017:27017'
+        volumes:
+        - './data/mongodb:/data/db'
+        networks:
+        - net
+
+networks:
+    net:
+        name: mynetwork
