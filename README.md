@@ -20,7 +20,7 @@ Follow these steps to get your **Pritunl VPN** up and running:
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/pritunl-vpn-docker.git
+   git clone https://github.com/mynksh/pritunl-vpn-docker.git
    cd pritunl-vpn-docker
    ```
 
